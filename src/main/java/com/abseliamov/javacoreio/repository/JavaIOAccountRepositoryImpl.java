@@ -106,38 +106,6 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
     @Override
     public boolean update(Account account) {
-        File file = CheckFile.checkFileExists(ACCOUNTS_FILE);
-        Set<Account> accounts = new HashSet<>();
-        boolean updateAccount = false;
-        String data;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(ACCOUNTS_FILE))) {
-            if (file.length() != 0) {
-                while ((data = reader.readLine()) != null) {
-                    String[] accountData = data.split(",");
-                    if (Long.parseLong(accountData[0]) == account.getId()) {
-                        accounts.add(new Account(Long.parseLong(accountData[0]), account.getStatus()));
-                        updateAccount = true;
-                        continue;
-                    }
-                    accounts.add(new Account(Long.parseLong(accountData[0]), AccountStatus.valueOf(accountData[1])));
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("Exception reading file in method update account: " + e);
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ACCOUNTS_FILE, false))) {
-            if (updateAccount) {
-                for (Account accountData : accounts)
-                    writer.write(accountData.getId() + "," + accountData.getStatus() + "\n");
-                return true;
-            }
-        } catch (IOException e) {
-            System.out.println("Exception writing file in method update account: " + e);
-        }
         return false;
     }
 

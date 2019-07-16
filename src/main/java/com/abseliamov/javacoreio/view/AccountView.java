@@ -18,14 +18,13 @@ public class AccountView {
         accountMenu.put(2, "Get account by ID");
         accountMenu.put(3, "Get account by name");
         accountMenu.put(4, "Get all accounts");
-        accountMenu.put(5, "Update account");
-        accountMenu.put(6, "Delete account");
+        accountMenu.put(5, "Delete account");
         accountMenu.put(0, "Main menu.");
 
         Set<Map.Entry<Integer, String>> accountMenuSet = accountMenu.entrySet();
 
-        PrintMenu.printMenu(accountMenuSet, "\tA C C O U N T S  ", 0, 6);
-        long select = ReadInputData.readInputData(0, 6);
+        PrintMenu.printMenu(accountMenuSet, "\tA C C O U N T S  ", 0, 5);
+        long select = ReadInputData.readInputData(0, 5);
 
         return select;
     }
@@ -105,29 +104,6 @@ public class AccountView {
                     }
                     break;
                 case 5:
-                    System.out.println("List of all ACCOUNTS:");
-                    if (accountController.getListAccounts() != null) {
-                        System.out.println("Choose account id to update or enter \'0\' to continue: ");
-                        long accountId;
-                        while ((accountId = ReadInputData.readInputData(0, AccountStatus.values().length)) != 0) {
-/*                            if (accountController.getById(accountId) != null) {
-//                                String newPassword = ReadInputData.readInputString();
-                                accountController.getListStatus();
-                                System.out.println("Chose new account STATUS: ");
-                                long newAccountId = ReadInputData.readInputData(0, AccountStatus.values().length);
-                                accountController.update(accountId, newAccountId);
-                                System.out.println("Enter account id to update or enter \'0\' to continue:");
-                            } else {
-                                System.out.println("Account with that id \'" + accountId + "\' not found.");
-                                System.out.println("Select correct account id or enter \'0\' to continue:");
-                            }
-  */                      }
-                    } else {
-                        System.out.println("Please create new account.");
-                        menu = false;
-                    }
-                    break;
-                case 6:
                     System.out.println("Accounts list:");
                     if (accountController.getListAccounts() != null) {
                         System.out.println("Enter account ID to delete or \'0\' to continue: ");

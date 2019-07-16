@@ -1,6 +1,6 @@
 package com.abseliamov.javacoreio.model;
 
-public class Skill implements Comparable<Skill>{
+public class Skill implements Comparable<Skill> {
     private long id;
     private String skillName;
 

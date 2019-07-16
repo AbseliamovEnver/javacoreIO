@@ -48,23 +48,6 @@ public class AccountController {
         return null;
     }
 
-    public void update(long id, long newId) {
-        AccountStatus accountStatus = null;
-        if (id != newId) {
-            for (int i = 0; i < AccountStatus.values().length; i++) {
-                if (newId == i + 1) {
-                    accountStatus = AccountStatus.values()[i];
-                    break;
-                }
-            }
-            if (accountRepository.update(new Account(id, accountStatus)))
-                System.out.println("Update account is successful");
-            else System.out.println("Account update failed.");
-        } else {
-            System.out.println("This account already exists");
-        }
-    }
-
     public void delete(Long id) {
         accountRepository.delete(id);
     }

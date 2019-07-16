@@ -35,8 +35,7 @@ public class SkillController {
             List<Skill> skillSorted = skills.stream().collect(Collectors.toList());
             Collections.sort(skillSorted);
             for (Skill skill : skillSorted)
-//                System.out.println(skill.getId() + "\t" + skill.getSkillName());
-            return skills;
+                return skills;
         } else System.out.println("List skills is empty.");
         return null;
     }

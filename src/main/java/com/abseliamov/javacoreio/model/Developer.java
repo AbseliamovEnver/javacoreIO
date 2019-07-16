@@ -2,7 +2,7 @@ package com.abseliamov.javacoreio.model;
 
 import java.util.Set;
 
-public class Developer implements Comparable<Developer>{
+public class Developer implements Comparable<Developer> {
     private long id;
     private String firstName;
     private String lastName;
