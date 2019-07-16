@@ -49,10 +49,9 @@ public class DeveloperController {
         return null;
     }
 
-    public void update(long id, String firstName, String lastName, Account account) {
-        Developer developer = developerRepository.getById(id);
-        Developer updateDeveloper = developerRepository.update(new Developer(id,
-                firstName, lastName, developer.getSkills(), account), id);
+    public void update(long id, String firstName, String lastName, Set<Skill> skills, Account account) {
+        Developer developer = new Developer(id, firstName, lastName, skills, account);
+        Developer updateDeveloper = developerRepository.update(developer, id);
         if (updateDeveloper != null)
             System.out.println("Developer with id \'" + updateDeveloper.getId() + "\' and firstName \'"
                     + updateDeveloper.getFirstName() + "\' update successfully.");
@@ -71,17 +70,17 @@ public class DeveloperController {
         return false;
     }
 
-    public boolean checkDeveloperSkill(Set<Skill> skills, long idSkill, long idDeveloper) {
+    public boolean checkDeveloperSkill(long idSkill, long idDeveloper) {
         Developer developer = developerRepository.getById(idDeveloper);
+        SkillController skills = new SkillController();
+        Set<Skill> allSkills = skills.getListSkills();
         Set<Skill> developerSkills = developer.getSkills();
         boolean skillExist = false;
         boolean idSkillExist = false;
-        Skill newSkill = null;
 
-        for (Skill skill : skills) {
+        for (Skill skill : allSkills) {
             if (skill.getId() == idSkill) {
                 idSkillExist = true;
-                newSkill = new Skill(skill.getId(), skill.getSkillName());
                 for (Skill skillList : developerSkills) {
                     if (skillList.getId() == idSkill) {
                         skillExist = true;
@@ -97,6 +96,6 @@ public class DeveloperController {
             System.out.println("This skill already exist.");
             return false;
         }
-        return developerRepository.addSkillDeveloper(developer, newSkill);
+        return true;
     }
 }

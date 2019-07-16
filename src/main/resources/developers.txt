@@ -1,0 +1,4 @@
+2,QQQQQQ,WWWWWWW,[1, 2, 3],1,ACTIVE
+3,kkk,iii,[1, 2],3,DELETED
+4,ooooooo,vvvvvvv,[1],2,BANNED
+1,eeeeeee,ddddddddd,[1, 2],2,BANNED

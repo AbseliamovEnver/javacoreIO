@@ -168,6 +168,7 @@ public class DeveloperView {
                     if (developerController.getListDeveloper() != null) {
                         System.out.println("Choose developer id to update or enter \'0\' to continue: ");
                         long developerId;
+                        boolean update = false;
                         while ((developerId = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
                             if (developerController.checkDeveloper(developerId)) {
                                 System.out.println("Enter new name or press \'ENTER\' to leave old name: ");
@@ -175,27 +176,28 @@ public class DeveloperView {
                                 System.out.println("Enter new surname or press \'ENTER\' to leave old surname: ");
                                 String newSurname = ReadInputData.readInputString();
                                 System.out.println("If you want to add new skill enter \'Y\' or any other key to continue.");
+                                long skillNewId;
+                                Set<Skill> newSkillsSet = developerController.getById(developerId).getSkills();
                                 if ((ReadInputData.readInputString()).equalsIgnoreCase("Y")) {
+                                    update = true;
                                     boolean status = false;
-                                    long skillNewId;
-                                    Set<Skill> skillSet1 = skill.getListSkills();
                                     System.out.println("Choose new id skill or enter \'0\' to continue: ");
                                     while ((skillNewId = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
-                                        status = developerController.checkDeveloperSkill(skillSet1, skillNewId, developerId);
+                                        status = developerController.checkDeveloperSkill(skillNewId, developerId);
                                         if (status) {
+                                            newSkillsSet.add(new Skill(skillNewId, skill.getById(skillNewId).getSkillName()));
                                             System.out.println("Skill with id " + skillNewId + " added.");
-                                            System.out.println("Choose new id skill or enter \'0\' to continue:");
-                                        } else {
-                                            System.out.println("Choose new id skill or enter \'0\' to continue:");
                                         }
+                                        System.out.println("Choose new id skill or enter \'0\' to continue:");
                                     }
-                                    System.out.println("Choose developer id to update or enter \'0\' to continue:");
                                 }
-                                long newAccountId = 0;
-                                Account newAccount = developerController.getById(developerId).getAccount();
+                                long newAccountId;
+                                Account devStatus = developerController.getById(developerId).getAccount();
+                                Account newAccount = null;
                                 System.out.println("If you want to change account status enter \'Y\' or any other key to continue.");
                                 if ((ReadInputData.readInputString()).equalsIgnoreCase("Y")) {
-                                    System.out.println("You status is: " + newAccount.getStatus());
+                                    update = true;
+                                    System.out.println("You status is: " + devStatus.getStatus());
                                     System.out.println("Chose new id new status: ");
                                     long sizeAccountList = account.getListAccounts().size();
                                     newAccountId = ReadInputData.readInputData(1, sizeAccountList);
@@ -206,8 +208,9 @@ public class DeveloperView {
                                 String developerLastname = newSurname.isEmpty()
                                         ? developerController.getById(developerId).getLastName() : newSurname;
 
-                                if (!newName.isEmpty() || !newSurname.isEmpty() || newAccount != null)
-                                    developerController.update(developerId, developerName, developerLastname, newAccount);
+                                if (!newName.isEmpty() || !newSurname.isEmpty() || update)
+                                    developerController.update(developerId, developerName, developerLastname,
+                                            newSkillsSet, newAccount);
                                 System.out.println("Enter \'0\' to continue:");
                             } else {
                                 System.out.println("Developer with id \'" + developerId + "\' not found.");

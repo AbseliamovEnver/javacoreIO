@@ -7,6 +7,7 @@ import com.abseliamov.javacoreio.utils.GetDeveloperList;
 import com.abseliamov.javacoreio.utils.GetID;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -17,12 +18,6 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     public void add(Developer developer) {
         File file = CheckFile.checkFileExists(DEVELOPER_FILE);
         boolean addDeveloper = true;
-        Set<Long> skillsId = new TreeSet<>();
-
-        Set<Skill> skills = developer.getSkills();
-        for (Skill skill : skills) {
-            skillsId.add(skill.getId());
-        }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(DEVELOPER_FILE));
              BufferedWriter writer = new BufferedWriter(new FileWriter(DEVELOPER_FILE, true))) {
@@ -36,6 +31,10 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
                 }
             }
             if (addDeveloper) {
+                Set<Long> skillsId = new TreeSet<>();
+                Set<Skill> skills = developer.getSkills();
+                for (Skill skill : skills)
+                    skillsId.add(skill.getId());
                 developer.setId(GetID.getID(DEVELOPER_FILE));
                 writer.write(developer.getId() + "," + developer.getFirstName() + ","
                         + developer.getLastName() + "," + skillsId + ","
@@ -96,11 +95,11 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     public Developer update(Developer developer, Long id) {
         File file = CheckFile.checkFileExists(DEVELOPER_FILE);
         Developer updateDeveloper = null;
-        Set<Long> skillsId = new TreeSet<>();
+        Set<Long> skillsIdNew = new HashSet<>();
 
         Set<Skill> skills = developer.getSkills();
         for (Skill skill : skills) {
-            skillsId.add(skill.getId());
+            skillsIdNew.add(skill.getId());
         }
 
         if (file.length() != 0) {
@@ -109,14 +108,17 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
                 for (Developer developerItem : developers) {
                     if (developerItem.getId() == id) {
                         writer.write(developer.getId() + "," + developer.getFirstName() + ","
-                                + developer.getLastName() + "," + skillsId + ","
+                                + developer.getLastName() + "," + skillsIdNew + ","
                                 + developer.getAccount().getId() + "," + developer.getAccount().getStatus() + "\n");
                         updateDeveloper = developerItem;
                         continue;
                     }
+                    Set<Long> skillsId = new HashSet<>();
+                    for (Skill skillItem : developerItem.getSkills())
+                        skillsId.add(skillItem.getId());
                     writer.write(developerItem.getId() + "," + developerItem.getFirstName() + ","
                             + developerItem.getLastName() + "," + skillsId + ","
-                            + developerItem.getAccount().getId() + "," + developer.getAccount().getStatus() + "\n");
+                            + developerItem.getAccount().getId() + "," + developerItem.getAccount().getStatus() + "\n");
                 }
             } catch (IOException e) {
                 System.out.println("Exception writing file in method delete developer: " + e);
@@ -129,13 +131,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     public void delete(Long id) {
         File file = CheckFile.checkFileExists(DEVELOPER_FILE);
         boolean developerDelete = false;
-        Set<Long> skillsId = new TreeSet<>();
-        Developer developerId = null;
-
-        Set<Skill> skills = developerId.getSkills();
-        for (Skill skill : skills) {
-            skillsId.add(skill.getId());
-        }
+        Set<Long> skillsId = new HashSet<>();
 
         if (file.length() != 0) {
             Set<Developer> developerList = GetDeveloperList.getDevelopers(file);
@@ -147,11 +143,15 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
                                 + developer.getFirstName() + "\' deleted successfully.");
                         continue;
                     }
+                    Set<Skill> skills = developer.getSkills();
+                    for (Skill skill : skills)
+                        skillsId.add(skill.getId());
+
                     writer.write(developer.getId() + "," + developer.getFirstName() + ","
                             + developer.getLastName() + "," + skillsId + ","
                             + developer.getAccount().getId() + "," + developer.getAccount().getStatus() + "\n");
                 }
-                if (developerDelete)
+                if (!developerDelete)
                     System.out.println("Developer with id \'" + id + "\' not found.");
             } catch (IOException e) {
                 System.out.println("Exception writing file in method delete developer: " + e);
@@ -163,24 +163,26 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
     public boolean addSkillDeveloper(Developer developer, Skill newSkill) {
         File file = CheckFile.checkFileExists(DEVELOPER_FILE);
         boolean addSkill = false;
-        Set<Long> skillsId = new TreeSet<>();
-        Developer developerId = null;
+        Set<Long> skillsIdNew = new HashSet<>();
 
-        Set<Skill> skills = developerId.getSkills();
-        for (Skill skill : skills) {
-            skillsId.add(skill.getId());
-        }
+        Set<Skill> skills = developer.getSkills();
+        for (Skill skill : skills)
+            skillsIdNew.add(skill.getId());
+
         if (file.length() != 0) {
             Set<Developer> developerList = GetDeveloperList.getDevelopers(file);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(DEVELOPER_FILE, false))) {
                 for (Developer developerItem : developerList) {
                     if (developerItem.getId() == developer.getId()) {
                         writer.write(developer.getId() + "," + developer.getFirstName() + ","
-                                + developer.getLastName() + "," + skillsId + ","
+                                + developer.getLastName() + "," + skillsIdNew + ","
                                 + developer.getAccount().getId() + "," + developer.getAccount().getStatus() + "\n");
                         addSkill = true;
                         continue;
                     }
+                    Set<Long> skillsId = new HashSet<>();
+                    for (Skill skillItem : developerItem.getSkills())
+                        skillsId.add(skillItem.getId());
                     writer.write(developerItem.getId() + "," + developerItem.getFirstName() + ","
                             + developerItem.getLastName() + "," + skillsId + ","
                             + developerItem.getAccount().getId() + "," + developer.getAccount().getStatus() + "\n");

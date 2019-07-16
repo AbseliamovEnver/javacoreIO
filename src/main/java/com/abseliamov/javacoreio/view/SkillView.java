@@ -49,7 +49,12 @@ public class SkillView {
                         menu = true;
                     break;
                 case 2:
-                    if (skillController.getListSkills() != null) {
+                    Set<Skill> skillItemId;
+                    if ((skillItemId = skillController.getListSkills()) != null) {
+                        List<Skill> skillSorted = skillItemId.stream().collect(Collectors.toList());
+                        Collections.sort(skillSorted);
+                        for (Skill skill : skillSorted)
+                            System.out.println(skill.getId() + "\t" + skill.getSkillName());
                         System.out.println("Enter skill ID or enter \'0\' to continue: ");
                         long id;
                         while ((id = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
