@@ -2,8 +2,7 @@ package com.abseliamov.javacoreio.view;
 
 import com.abseliamov.javacoreio.controller.SkillController;
 import com.abseliamov.javacoreio.model.Skill;
-import com.abseliamov.javacoreio.utils.PrintMenu;
-import com.abseliamov.javacoreio.utils.ReadInputData;
+import com.abseliamov.javacoreio.utils.IOUtil;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,8 +20,8 @@ public class SkillView {
 
         Set<Map.Entry<Integer, String>> skillMenuSet = skillMenu.entrySet();
 
-        PrintMenu.printMenu(skillMenuSet, "\tS K I L L S  ", 0, 5);
-        long select = ReadInputData.readInputData(0, 5);
+        IOUtil.printMenu(skillMenuSet, "\tS K I L L S  ", 0, 5);
+        long select = IOUtil.readInputData(0, 5);
 
         return select;
     }
@@ -41,9 +40,9 @@ public class SkillView {
                     break;
                 case 1:
                     System.out.println("If you want to create a new skill enter \'Y\' or other key to continue:");
-                    if (ReadInputData.readInputString().equalsIgnoreCase("Y")) {
+                    if (IOUtil.readInputString().equalsIgnoreCase("Y")) {
                         System.out.println("Enter skill name:");
-                        skillController.add(ReadInputData.readInputString());
+                        skillController.add(IOUtil.readInputString());
                         menu = false;
                     } else
                         menu = true;
@@ -57,7 +56,7 @@ public class SkillView {
                             System.out.println(skill.getId() + "\t" + skill.getSkillName());
                         System.out.println("Enter skill ID or enter \'0\' to continue: ");
                         long id;
-                        while ((id = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
+                        while ((id = IOUtil.readInputData(0, Long.MAX_VALUE)) != 0) {
                             Skill skill = skillController.getById(id);
                             if (skill != null) {
                                 System.out.println("Skill with id: \'" + id + "\' have value \'"
@@ -82,7 +81,7 @@ public class SkillView {
                             System.out.println(skill.getId() + "\t" + skill.getSkillName());
                         System.out.println("Enter skill name or enter \'0\' to continue: ");
                         String name;
-                        while (!(name = ReadInputData.readInputString()).equals("0")) {
+                        while (!(name = IOUtil.readInputString()).equals("0")) {
                             Skill skill = skillController.getByName(name);
                             if (skill != null) {
                                 System.out.println("Skill with name: \'" + name + "\' have id \'" + skill.getId() + "\'.");
@@ -114,7 +113,7 @@ public class SkillView {
                     if (skillController.getListSkills() != null) {
                         System.out.println("Enter skill ID to delete or \'0\' to continue: ");
                         long id;
-                        while ((id = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
+                        while ((id = IOUtil.readInputData(0, Long.MAX_VALUE)) != 0) {
                             skillController.delete(id);
                             System.out.println("Select other skill id or enter \'0\' to continue:");
                         }

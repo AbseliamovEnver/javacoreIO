@@ -1,7 +1,6 @@
 package com.abseliamov.javacoreio.view;
 
-import com.abseliamov.javacoreio.utils.PrintMenu;
-import com.abseliamov.javacoreio.utils.ReadInputData;
+import com.abseliamov.javacoreio.utils.IOUtil;
 
 import java.util.Map;
 import java.util.Set;
@@ -18,8 +17,8 @@ public class MainMenu {
 
         Set<Map.Entry<Integer, String>> mainMenuSet = mainMenu.entrySet();
 
-        PrintMenu.printMenu(mainMenuSet, "\t M A I N  ", 0, 3);
-        long select = ReadInputData.readInputData(0, 3);
+        IOUtil.printMenu(mainMenuSet, "\t M A I N  ", 0, 3);
+        long select = IOUtil.readInputData(0, 3);
 
         if (select == 0)
             System.out.println(" THANKS FOR USING OUR APPLICATION!");

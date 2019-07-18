@@ -2,7 +2,7 @@ package com.abseliamov.javacoreio.repository;
 
 import com.abseliamov.javacoreio.model.Account;
 import com.abseliamov.javacoreio.model.AccountStatus;
-import com.abseliamov.javacoreio.utils.CheckFile;
+import com.abseliamov.javacoreio.utils.IOUtil;
 
 import java.io.*;
 import java.util.HashSet;
@@ -14,7 +14,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
     @Override
     public void add(Account account) {
         boolean addAccount = true;
-        File file = CheckFile.checkFileExists(ACCOUNTS_FILE);
+        File file = IOUtil.checkFileExists(ACCOUNTS_FILE);
         String data;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(ACCOUNTS_FILE));
@@ -27,7 +27,6 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
                 }
             }
             if (addAccount) {
-//                account.setId(GetID.getID(ACCOUNTS_FILE));
                 writer.write(account.getId() + "," + account.getStatus() + "\n");
                 System.out.println("Account with id \'" + account.getId()
                         + "\' and status \'" + account.getStatus() + "\' added successful");
@@ -42,7 +41,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Account getById(Long id) {
-        File file = CheckFile.checkFileExists(ACCOUNTS_FILE);
+        File file = IOUtil.checkFileExists(ACCOUNTS_FILE);
         String data;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(ACCOUNTS_FILE))) {
@@ -63,7 +62,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Account getByName(String status) {
-        File file = CheckFile.checkFileExists(ACCOUNTS_FILE);
+        File file = IOUtil.checkFileExists(ACCOUNTS_FILE);
         String data;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(ACCOUNTS_FILE))) {
@@ -84,7 +83,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
     @Override
     public Set<Account> getAll() {
-        File file = CheckFile.checkFileExists(ACCOUNTS_FILE);
+        File file = IOUtil.checkFileExists(ACCOUNTS_FILE);
         Set<Account> accounts = new HashSet<>();
         String data;
 
@@ -111,7 +110,7 @@ public class JavaIOAccountRepositoryImpl implements AccountRepository {
 
     @Override
     public void delete(Long id) {
-        File file = CheckFile.checkFileExists(ACCOUNTS_FILE);
+        File file = IOUtil.checkFileExists(ACCOUNTS_FILE);
         Set<Account> accounts = new HashSet<>();
         String data;
         boolean accountDelete = false;

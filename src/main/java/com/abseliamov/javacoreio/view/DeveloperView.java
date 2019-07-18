@@ -6,8 +6,7 @@ import com.abseliamov.javacoreio.controller.SkillController;
 import com.abseliamov.javacoreio.model.Account;
 import com.abseliamov.javacoreio.model.Developer;
 import com.abseliamov.javacoreio.model.Skill;
-import com.abseliamov.javacoreio.utils.PrintMenu;
-import com.abseliamov.javacoreio.utils.ReadInputData;
+import com.abseliamov.javacoreio.utils.IOUtil;
 
 import java.util.*;
 
@@ -25,8 +24,8 @@ public class DeveloperView {
 
         Set<Map.Entry<Integer, String>> mainMenuSet = developerMenu.entrySet();
 
-        PrintMenu.printMenu(mainMenuSet, " D E V E L O P E R S  ", 0, 6);
-        long select = ReadInputData.readInputData(0, 6);
+        IOUtil.printMenu(mainMenuSet, " D E V E L O P E R S  ", 0, 6);
+        long select = IOUtil.readInputData(0, 6);
 
         return select;
     }
@@ -50,11 +49,11 @@ public class DeveloperView {
                     break;
                 case 1:
                     System.out.println("If you want to create a new developer enter \'Y\' or other key to continue:");
-                    if (ReadInputData.readInputString().equalsIgnoreCase("Y")) {
+                    if (IOUtil.readInputString().equalsIgnoreCase("Y")) {
                         System.out.println("Enter developer first name:");
-                        String firstName = ReadInputData.readInputString();
+                        String firstName = IOUtil.readInputString();
                         System.out.println("Enter developer last name:");
-                        String lastName = ReadInputData.readInputString();
+                        String lastName = IOUtil.readInputString();
                         System.out.println("List skills: \nID\tSKILLS");
                         Set<Skill> skillSet;
                         if ((skillSet = skill.getListSkills()) == null) {
@@ -66,7 +65,7 @@ public class DeveloperView {
 
                         System.out.println("Select developer skills or enter \'0\': ");
                         long idSkill;
-                        while ((idSkill = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
+                        while ((idSkill = IOUtil.readInputData(0, Long.MAX_VALUE)) != 0) {
                             boolean status = false;
                             for (Skill skillItem : skillSet) {
                                 if (skillItem.getId() == idSkill) {
@@ -90,7 +89,7 @@ public class DeveloperView {
                         }
                         long idAccount;
                         System.out.println("Choose id account or enter \'0\':");
-                        while ((idAccount = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
+                        while ((idAccount = IOUtil.readInputData(0, Long.MAX_VALUE)) != 0) {
                             boolean flag = false;
                             for (Account acc : accounts) {
                                 if (acc.getId() == idAccount) {
@@ -116,7 +115,7 @@ public class DeveloperView {
                     if (developerController.getListDeveloper() != null) {
                         System.out.println("Enter developer ID or enter \'0\' to continue: ");
                         long id;
-                        while ((id = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
+                        while ((id = IOUtil.readInputData(0, Long.MAX_VALUE)) != 0) {
                             Developer developer = developerController.getById(id);
                             if (developer != null) {
                                 System.out.println("Developer with id = \'" + id + "\' have:\nname = \'"
@@ -138,7 +137,7 @@ public class DeveloperView {
                     if (developerController.getListDeveloper() != null) {
                         System.out.println("Enter developer name or enter \'0\' to continue: ");
                         String nameDeveloper;
-                        while (!(nameDeveloper = ReadInputData.readInputString()).equals("0")) {
+                        while (!(nameDeveloper = IOUtil.readInputString()).equals("0")) {
                             Developer developer = developerController.getByName(nameDeveloper);
                             if (developer != null) {
                                 System.out.println("Developer with name = \'" + developer.getFirstName() + "\' have:\nid = \'"
@@ -169,20 +168,20 @@ public class DeveloperView {
                         System.out.println("Choose developer id to update or enter \'0\' to continue: ");
                         long developerId;
                         boolean update = false;
-                        while ((developerId = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
+                        while ((developerId = IOUtil.readInputData(0, Long.MAX_VALUE)) != 0) {
                             if (developerController.checkDeveloper(developerId)) {
                                 System.out.println("Enter new name or press \'ENTER\' to leave old name: ");
-                                String newName = ReadInputData.readInputString();
+                                String newName = IOUtil.readInputString();
                                 System.out.println("Enter new surname or press \'ENTER\' to leave old surname: ");
-                                String newSurname = ReadInputData.readInputString();
+                                String newSurname = IOUtil.readInputString();
                                 System.out.println("If you want to add new skill enter \'Y\' or any other key to continue.");
                                 long skillNewId;
                                 Set<Skill> newSkillsSet = developerController.getById(developerId).getSkills();
-                                if ((ReadInputData.readInputString()).equalsIgnoreCase("Y")) {
+                                if ((IOUtil.readInputString()).equalsIgnoreCase("Y")) {
                                     update = true;
                                     boolean status = false;
                                     System.out.println("Choose new id skill or enter \'0\' to continue: ");
-                                    while ((skillNewId = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
+                                    while ((skillNewId = IOUtil.readInputData(0, Long.MAX_VALUE)) != 0) {
                                         status = developerController.checkDeveloperSkill(skillNewId, developerId);
                                         if (status) {
                                             newSkillsSet.add(new Skill(skillNewId, skill.getById(skillNewId).getSkillName()));
@@ -195,12 +194,12 @@ public class DeveloperView {
                                 Account devStatus = developerController.getById(developerId).getAccount();
                                 Account newAccount = null;
                                 System.out.println("If you want to change account status enter \'Y\' or any other key to continue.");
-                                if ((ReadInputData.readInputString()).equalsIgnoreCase("Y")) {
+                                if ((IOUtil.readInputString()).equalsIgnoreCase("Y")) {
                                     update = true;
                                     System.out.println("You status is: " + devStatus.getStatus());
                                     System.out.println("Chose new id new status: ");
                                     long sizeAccountList = account.getListAccounts().size();
-                                    newAccountId = ReadInputData.readInputData(1, sizeAccountList);
+                                    newAccountId = IOUtil.readInputData(1, sizeAccountList);
                                     newAccount = account.getById(newAccountId);
                                 }
                                 String developerName = newName.isEmpty()
@@ -227,7 +226,7 @@ public class DeveloperView {
                     if (developerController.getListDeveloper() != null) {
                         System.out.println("Choose developer id to remove or enter \'0\' to continue: ");
                         long id;
-                        while ((id = ReadInputData.readInputData(0, Long.MAX_VALUE)) != 0) {
+                        while ((id = IOUtil.readInputData(0, Long.MAX_VALUE)) != 0) {
                             developerController.delete(id);
                             System.out.println("Select other developer id or enter \'0\' to continue:");
                         }

@@ -1,8 +1,7 @@
 package com.abseliamov.javacoreio.repository;
 
 import com.abseliamov.javacoreio.model.Skill;
-import com.abseliamov.javacoreio.utils.CheckFile;
-import com.abseliamov.javacoreio.utils.GetID;
+import com.abseliamov.javacoreio.utils.IOUtil;
 
 import java.io.*;
 import java.util.HashSet;
@@ -13,7 +12,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public void add(Skill skill) {
-        File file = CheckFile.checkFileExists(SKILLS_FILE);
+        File file = IOUtil.checkFileExists(SKILLS_FILE);
         boolean addSkill = true;
         String data;
 
@@ -27,7 +26,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
                 }
             }
             if (addSkill) {
-                skill.setId(GetID.getID(SKILLS_FILE));
+                skill.setId(IOUtil.getID(SKILLS_FILE));
                 writer.write(skill.getId() + "," + skill.getSkillName() + "\n");
                 System.out.println("Skill added is successful");
                 writer.flush();
@@ -41,7 +40,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Skill getById(Long id) {
-        File file = CheckFile.checkFileExists(SKILLS_FILE);
+        File file = IOUtil.checkFileExists(SKILLS_FILE);
         String data;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(SKILLS_FILE))) {
@@ -62,7 +61,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Skill getByName(String name) {
-        File file = CheckFile.checkFileExists(SKILLS_FILE);
+        File file = IOUtil.checkFileExists(SKILLS_FILE);
         String data;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(SKILLS_FILE))) {
@@ -83,7 +82,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Set<Skill> getAll() {
-        File file = CheckFile.checkFileExists(SKILLS_FILE);
+        File file = IOUtil.checkFileExists(SKILLS_FILE);
         Set<Skill> skills = new HashSet<>();
         String data;
 
@@ -105,7 +104,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public void delete(Long id) {
-        File file = CheckFile.checkFileExists(SKILLS_FILE);
+        File file = IOUtil.checkFileExists(SKILLS_FILE);
         Set<Skill> skills = new HashSet<>();
         boolean skillDelete = false;
         String data;
@@ -139,7 +138,7 @@ public class JavaIOSkillRepositoryImpl implements SkillRepository {
 
     @Override
     public Set<Skill> getData() {
-        File file = CheckFile.checkFileExists(SKILLS_FILE);
+        File file = IOUtil.checkFileExists(SKILLS_FILE);
         Set<Skill> setSkills = new HashSet<>();
         String data;
 

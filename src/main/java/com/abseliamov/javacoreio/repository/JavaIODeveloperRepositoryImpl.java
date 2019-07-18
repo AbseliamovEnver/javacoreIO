@@ -2,9 +2,7 @@ package com.abseliamov.javacoreio.repository;
 
 import com.abseliamov.javacoreio.model.Developer;
 import com.abseliamov.javacoreio.model.Skill;
-import com.abseliamov.javacoreio.utils.CheckFile;
-import com.abseliamov.javacoreio.utils.GetDeveloperList;
-import com.abseliamov.javacoreio.utils.GetID;
+import com.abseliamov.javacoreio.utils.IOUtil;
 
 import java.io.*;
 import java.util.HashSet;
@@ -16,7 +14,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public void add(Developer developer) {
-        File file = CheckFile.checkFileExists(DEVELOPER_FILE);
+        File file = IOUtil.checkFileExists(DEVELOPER_FILE);
         boolean addDeveloper = true;
 
         try (BufferedReader reader = new BufferedReader(new FileReader(DEVELOPER_FILE));
@@ -35,7 +33,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
                 Set<Skill> skills = developer.getSkills();
                 for (Skill skill : skills)
                     skillsId.add(skill.getId());
-                developer.setId(GetID.getID(DEVELOPER_FILE));
+                developer.setId(IOUtil.getID(DEVELOPER_FILE));
                 writer.write(developer.getId() + "," + developer.getFirstName() + ","
                         + developer.getLastName() + "," + skillsId + ","
                         + developer.getAccount().getId() + "," + developer.getAccount().getStatus() + "\n");
@@ -50,11 +48,11 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public Developer getById(Long id) {
-        File file = CheckFile.checkFileExists(DEVELOPER_FILE);
+        File file = IOUtil.checkFileExists(DEVELOPER_FILE);
         Set<Developer> developers;
 
         if (file.length() != 0) {
-            developers = GetDeveloperList.getDevelopers(file);
+            developers = IOUtil.getDevelopers(file);
             for (Developer developer : developers) {
                 if (developer.getId() == id) {
                     return developer;
@@ -67,11 +65,11 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public Developer getByName(String name) {
-        File file = CheckFile.checkFileExists(DEVELOPER_FILE);
+        File file = IOUtil.checkFileExists(DEVELOPER_FILE);
         Set<Developer> developers;
 
         if (file.length() != 0) {
-            developers = GetDeveloperList.getDevelopers(file);
+            developers = IOUtil.getDevelopers(file);
             for (Developer developer : developers) {
                 if (developer.getFirstName().equals(name))
                     return developer;
@@ -82,18 +80,18 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public Set<Developer> getAll() {
-        File file = CheckFile.checkFileExists(DEVELOPER_FILE);
+        File file = IOUtil.checkFileExists(DEVELOPER_FILE);
         Set<Developer> developers = null;
 
         if (file.length() != 0) {
-            developers = GetDeveloperList.getDevelopers(file);
+            developers = IOUtil.getDevelopers(file);
         } else System.out.println("File with developers is empty");
         return developers;
     }
 
     @Override
     public Developer update(Developer developer, Long id) {
-        File file = CheckFile.checkFileExists(DEVELOPER_FILE);
+        File file = IOUtil.checkFileExists(DEVELOPER_FILE);
         Developer updateDeveloper = null;
         Set<Long> skillsIdNew = new HashSet<>();
 
@@ -103,7 +101,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
         }
 
         if (file.length() != 0) {
-            Set<Developer> developers = GetDeveloperList.getDevelopers(file);
+            Set<Developer> developers = IOUtil.getDevelopers(file);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(DEVELOPER_FILE, false))) {
                 for (Developer developerItem : developers) {
                     if (developerItem.getId() == id) {
@@ -129,12 +127,12 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public void delete(Long id) {
-        File file = CheckFile.checkFileExists(DEVELOPER_FILE);
+        File file = IOUtil.checkFileExists(DEVELOPER_FILE);
         boolean developerDelete = false;
         Set<Long> skillsId = new HashSet<>();
 
         if (file.length() != 0) {
-            Set<Developer> developerList = GetDeveloperList.getDevelopers(file);
+            Set<Developer> developerList = IOUtil.getDevelopers(file);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(DEVELOPER_FILE, false))) {
                 for (Developer developer : developerList) {
                     if (developer.getId() == id) {
@@ -161,7 +159,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public boolean addSkillDeveloper(Developer developer, Skill newSkill) {
-        File file = CheckFile.checkFileExists(DEVELOPER_FILE);
+        File file = IOUtil.checkFileExists(DEVELOPER_FILE);
         boolean addSkill = false;
         Set<Long> skillsIdNew = new HashSet<>();
 
@@ -170,7 +168,7 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
             skillsIdNew.add(skill.getId());
 
         if (file.length() != 0) {
-            Set<Developer> developerList = GetDeveloperList.getDevelopers(file);
+            Set<Developer> developerList = IOUtil.getDevelopers(file);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(DEVELOPER_FILE, false))) {
                 for (Developer developerItem : developerList) {
                     if (developerItem.getId() == developer.getId()) {
